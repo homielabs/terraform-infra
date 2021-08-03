@@ -15,3 +15,4 @@ repos:
       - id: checkov
         additional_dependencies:
           - "checkov"
+      - id: terraform_docs
