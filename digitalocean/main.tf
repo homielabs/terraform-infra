@@ -17,9 +17,9 @@ data "digitalocean_ssh_key" "ssh_keys" {
 }
 
 resource "digitalocean_droplet" "master" {
-  image      = "ubuntu-20-04-x64"
+  image      = "ubuntu-22-04-x64"
   size       = "s-1vcpu-1gb"
-  region     = "sfo2"
+  region     = "sfo3"
   name       = "master"
   monitoring = true
   ssh_keys = flatten([
@@ -56,7 +56,8 @@ resource "digitalocean_record" "records" {
   }
 
   domain = digitalocean_domain.domains[each.value.domain].name
-  name   = each.key
-  type   = "A"
-  value  = digitalocean_droplet.master.ipv4_address
+  # this should really be the prefix (plex in plex.inthemainfra.me)
+  name  = each.value.subdomain
+  type  = "A"
+  value = digitalocean_droplet.master.ipv4_address
 }

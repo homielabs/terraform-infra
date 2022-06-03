@@ -9,7 +9,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | 2.10.1 |
+| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | 2.20.0 |
 
 ## Modules
 

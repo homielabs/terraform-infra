@@ -5,9 +5,9 @@
 Multiple accounts? Switch between them with Terraform workspaces, as they'll
 automatically manage state.
 
-```console
-$ terraform workspace create [location]
-$ terraform workspace select [location]
+```bash
+terraform workspace create [location]
+terraform workspace select [location]
 ```
 
 Then `terraform apply -var-file=filename.tfvars` to pick the right file for the
@@ -20,3 +20,9 @@ workspace as a key.
 
 First run is a little long as pre-commit installs + caches `checkov`, which has
 a bunch of dependencies of its own. Future runs will be faster if cached.
+
+## Documentation
+
+```bash
+terraform-docs digitalocean
+```
