@@ -10,6 +10,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | 2.20.0 |
+| <a name="provider_http"></a> [http](#provider\_http) | 2.2.0 |
 
 ## Modules
 
@@ -23,12 +24,13 @@ No modules.
 | [digitalocean_droplet.master](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/droplet) | resource |
 | [digitalocean_record.records](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/record) | resource |
 | [digitalocean_ssh_key.ssh_keys](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/data-sources/ssh_key) | data source |
+| [http_http.cloud_init_from_network](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cloud_init"></a> [cloud\_init](#input\_cloud\_init) | cloud\_init content for droplet | `string` | `"../general/cloud_init.yml"` | no |
+| <a name="input_cloud_init"></a> [cloud\_init](#input\_cloud\_init) | cloud\_init content for droplet | `string` | `"https://raw.githubusercontent.com/guppy0130/cloud-init-configs/main/digitalocean.yml"` | no |
 | <a name="input_do_token"></a> [do\_token](#input\_do\_token) | DO Token | `string` | n/a | yes |
 | <a name="input_domain_file"></a> [domain\_file](#input\_domain\_file) | YAML with root domain as keys and a list of subdomain fragments as the value | `string` | `"../general/domains.yml"` | no |
 | <a name="input_ssh_keys"></a> [ssh\_keys](#input\_ssh\_keys) | List of SSH keys to get by name | `set(string)` | n/a | yes |

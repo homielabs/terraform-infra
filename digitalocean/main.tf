@@ -16,6 +16,10 @@ data "digitalocean_ssh_key" "ssh_keys" {
   name     = each.value
 }
 
+data "http" "cloud_init_from_network" {
+  url = var.cloud_init
+}
+
 resource "digitalocean_droplet" "master" {
   image      = "ubuntu-22-04-x64"
   size       = "s-1vcpu-1gb"
@@ -25,7 +29,7 @@ resource "digitalocean_droplet" "master" {
   ssh_keys = flatten([
     for name, key_data in data.digitalocean_ssh_key.ssh_keys : key_data.id
   ])
-  user_data = templatefile(var.cloud_init, {})
+  user_data = data.http.cloud_init_from_network.response_body
 }
 
 # get data from disk
