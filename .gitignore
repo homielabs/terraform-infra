@@ -35,3 +35,5 @@ terraform.rc
 
 # user-specific config
 general/
+
+.venv/
