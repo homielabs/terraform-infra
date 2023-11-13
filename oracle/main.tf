@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     oci = {
-      source  = "hashicorp/oci"
-      version = "~> 4.0"
+      source  = "oracle/oci"
+      version = "~> 5.0"
     }
   }
 }
@@ -20,14 +20,14 @@ data "oci_identity_availability_domains" "ads" {
 }
 
 # the 200g block volume you can have
-resource "oci_core_volume" "big_boi_1" {
-  availability_domain  = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  compartment_id       = var.tenancy_ocid
-  size_in_gbs          = 200
-  is_auto_tune_enabled = false
-  vpus_per_gb          = 0
-  display_name         = "big_boi_1"
-}
+# resource "oci_core_volume" "big_boi_1" {
+#   availability_domain  = data.oci_identity_availability_domains.ads.availability_domains[0].name
+#   compartment_id       = var.tenancy_ocid
+#   size_in_gbs          = 200
+#   is_auto_tune_enabled = false
+#   vpus_per_gb          = 0
+#   display_name         = "big_boi_1"
+# }
 
 # the free permanent public ip addr
 resource "oci_core_public_ip" "oracle-vm-1" {
@@ -54,83 +54,83 @@ resource "oci_core_subnet" "subnet" {
 # TODO: determine if necessary for k3s - you should be able to use traefik to
 # revproxy this out to HTTP/S
 # terraform import oci_core_security_list.k3s [security list OCID]
-resource "oci_core_security_list" "k3s" {
-  compartment_id = var.tenancy_ocid
-  vcn_id         = oci_core_vcn.vcn.id
-  egress_security_rules {
-    description      = "k3s flannel"
-    destination      = "10.0.0.0/8"
-    destination_type = "CIDR_BLOCK"
-    protocol         = "17"
-    stateless        = true
+# resource "oci_core_security_list" "k3s" {
+#   compartment_id = var.tenancy_ocid
+#   vcn_id         = oci_core_vcn.vcn.id
+#   egress_security_rules {
+#     description      = "k3s flannel"
+#     destination      = "10.0.0.0/8"
+#     destination_type = "CIDR_BLOCK"
+#     protocol         = "17"
+#     stateless        = true
 
-    udp_options {
-      max = 8472
-      min = 8472
-    }
-  }
-  egress_security_rules {
-    description      = "k3s testing"
-    destination      = "0.0.0.0/0"
-    destination_type = "CIDR_BLOCK"
-    protocol         = "6"
-    stateless        = true
+#     udp_options {
+#       max = 8472
+#       min = 8472
+#     }
+#   }
+#   egress_security_rules {
+#     description      = "k3s testing"
+#     destination      = "0.0.0.0/0"
+#     destination_type = "CIDR_BLOCK"
+#     protocol         = "6"
+#     stateless        = true
 
-    tcp_options {
-      max = 8081
-      min = 8081
-    }
-  }
+#     tcp_options {
+#       max = 8081
+#       min = 8081
+#     }
+#   }
 
-  ingress_security_rules {
-    description = "k3s flannel"
-    protocol    = "17"
-    source      = "10.0.0.0/8"
-    source_type = "CIDR_BLOCK"
-    stateless   = true
+#   ingress_security_rules {
+#     description = "k3s flannel"
+#     protocol    = "17"
+#     source      = "10.0.0.0/8"
+#     source_type = "CIDR_BLOCK"
+#     stateless   = true
 
-    udp_options {
-      max = 8472
-      min = 8472
-    }
-  }
-  ingress_security_rules {
-    description = "k3s metrics"
-    protocol    = "6"
-    source      = "10.0.0.0/8"
-    source_type = "CIDR_BLOCK"
-    stateless   = false
+#     udp_options {
+#       max = 8472
+#       min = 8472
+#     }
+#   }
+#   ingress_security_rules {
+#     description = "k3s metrics"
+#     protocol    = "6"
+#     source      = "10.0.0.0/8"
+#     source_type = "CIDR_BLOCK"
+#     stateless   = false
 
-    tcp_options {
-      max = 10250
-      min = 10250
-    }
-  }
-  ingress_security_rules {
-    description = "k3s testing"
-    protocol    = "6"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = true
+#     tcp_options {
+#       max = 10250
+#       min = 10250
+#     }
+#   }
+#   ingress_security_rules {
+#     description = "k3s testing"
+#     protocol    = "6"
+#     source      = "0.0.0.0/0"
+#     source_type = "CIDR_BLOCK"
+#     stateless   = true
 
-    tcp_options {
-      max = 8081
-      min = 8081
-    }
-  }
-  ingress_security_rules {
-    description = "k3s api"
-    protocol    = "6"
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    stateless   = false
+#     tcp_options {
+#       max = 8081
+#       min = 8081
+#     }
+#   }
+#   ingress_security_rules {
+#     description = "k3s api"
+#     protocol    = "6"
+#     source      = "0.0.0.0/0"
+#     source_type = "CIDR_BLOCK"
+#     stateless   = false
 
-    tcp_options {
-      max = 6443
-      min = 6443
-    }
-  }
-}
+#     tcp_options {
+#       max = 6443
+#       min = 6443
+#     }
+#   }
+# }
 
 resource "oci_core_instance_configuration" "x86_instance_configuration" {
   compartment_id = var.tenancy_ocid
